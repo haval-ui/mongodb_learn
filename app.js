@@ -5,7 +5,10 @@ const mongoose=require('mongoose');
 mongoose.connect('mongodb://localhost:27017/fruitsDB');
 //create a schema for the data that you want to save. 
 const fruitsSchema =new mongoose.Schema({
-    name : String,
+    name : {
+        type:String,
+        required: [true, 'there is no rfuit withot a name !!']
+    },
     rating:Number,
     review:String,
 
@@ -13,13 +16,14 @@ const fruitsSchema =new mongoose.Schema({
 //create a model for the schema.  
 const Fruit =mongoose.model("Fruit",fruitsSchema);
 //add documents with this lines for one data and many 
-const fruit =new Fruit({
-    name:"Apple",
+const hanar =new Fruit({
+    name:"hanar",
     rating:7,
     review:"pretty solid aas a fruit."
 });
+// hanar.save()
 //remove below coment tosave one data.
-// fruit.save(); 
+//peach.save(); 
 const kiwi = new Fruit({
     name:"kiwi",
     rating:5,
@@ -35,8 +39,10 @@ const banana=new Fruit({
     rating:10,
     review:"now we tokinf the best out there"
 });
-//remove below comment to sasve as many  data as you want in one line. 
-//let att=[banana,orange,kiwi];
+// remove below comment to sasve as many  data as you want in one line. 
+
+
+// let att=[banana,orange,kiwi];
 // Fruit.insertMany(att,(err)=>{
 //     if (err){
 //         console.log(err)
@@ -52,14 +58,20 @@ const banana=new Fruit({
 const personsSchema = new mongoose.Schema({
     name:String,
     age:Number,
+    favoretFruit:fruitsSchema,
 });
+
 const Person=mongoose.model("Persons",personsSchema);
-const person=new Person({
-    name:"mamz",
-    age:2.
+const hama =new Person({
+    name:"hama",
+    age:20,
+    favoretFruit:hanar,
 })
+
+
+
 //remove coment below to svae the data.
-// person.save();
+hama.save();
 
 // weuse bellow methis to get the data inside the database.**it work just like js objects**
 Fruit.find((err,fruits)=>{
@@ -74,3 +86,22 @@ Fruit.find((err,fruits)=>{
 });
 
 //this line **mongoose.connection.close();** is used to close the conection to the local db automaticaly
+
+//below codeis used to delet doc from the db.
+
+// Fruit.deleteOne({name:"banana"},function(err){
+//     if (err){
+//         console.log(err)
+//     }else{
+//         console.log("ok")
+//     }
+// });
+// the below code is used to delet all the items that ,mach the condition 
+
+Person.deleteMany({id:"630f506f0066d71311930004"},(err)=>{
+    if (err){
+        console.log(err)
+    }else{
+        console.log("ok")
+    }
+});
